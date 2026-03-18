@@ -228,6 +228,44 @@ function btp_gal_admin_page() {
 
         <div id="bup-results" style="margin-top:16px"></div>
 
+        <hr style="margin-top:24px">
+        <h2>Shortcode do álbum</h2>
+        <p class="description">
+            Gerado automaticamente a partir do caminho do álbum informado acima.
+            Copie e cole na página desejada.
+        </p>
+
+        <table class="form-table" role="presentation">
+            <tr>
+                <th scope="row"><label for="bup-sc-link">Página destino (índice / árvore)</label></th>
+                <td>
+                    <select id="bup-sc-link">
+                        <option value="">— esta página —</option>
+                        <?php foreach ($pages as $p) {
+                            $plink = get_permalink($p->ID);
+                            echo '<option value="' . esc_attr($plink) . '">'
+                                . esc_html($p->post_title) . '</option>';
+                        } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Colunas</th>
+                <td><input id="bup-sc-columns" type="number" min="2" max="6" value="4" style="width:70px"></td>
+            </tr>
+            <tr>
+                <th scope="row">Per page</th>
+                <td><input id="bup-sc-per_page" type="number" min="1" value="24" style="width:70px"></td>
+            </tr>
+        </table>
+
+        <p><strong>Galeria (álbum fixo):</strong></p>
+        <textarea id="bup-sc-fixed" class="large-text code" rows="2" readonly></textarea>
+        <p><strong>Índice (lista de subálbuns):</strong></p>
+        <textarea id="bup-sc-index" class="large-text code" rows="2" readonly></textarea>
+        <p><strong>Árvore:</strong></p>
+        <textarea id="bup-sc-tree" class="large-text code" rows="2" readonly></textarea>
+
         <?php elseif ($active === 'builder') : ?>
 
         <h2>Gerador de Shortcodes</h2>

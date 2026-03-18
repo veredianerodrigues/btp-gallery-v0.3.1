@@ -64,11 +64,41 @@
 
     /* ── Uploader ──────────────────────────────────────────────── */
 
+    function buildUploadShortcodes() {
+        var album = $('#bup-album-path').val().trim();
+        var cols  = $('#bup-sc-columns').val()  || '4';
+        var pp    = $('#bup-sc-per_page').val() || '24';
+        var link  = $('#bup-sc-link').val()     || '';
+
+        // year = primeiro segmento do caminho (ex: "2025" de "2025/Evento")
+        var year = album ? album.split('/')[0] : '';
+
+        $('#bup-sc-fixed').val(
+            album
+                ? '[btp_gallery album="' + album + '" columns="' + cols + '" per_page="' + pp + '" download="true"]'
+                : ''
+        );
+        $('#bup-sc-index').val(
+            year
+                ? '[btp_gallery_index year="' + year + '" link="' + link + '" columns="' + cols + '" depth="1"]'
+                : ''
+        );
+        $('#bup-sc-tree').val(
+            year
+                ? '[btp_gallery_tree year="' + year + '" link="' + link + '" columns="' + cols + '"]'
+                : ''
+        );
+    }
+
     // Preenche o campo de caminho ao selecionar álbum no dropdown
     $(document).on('change', '#bup-album-select', function () {
         var val = $(this).val();
-        if (val) $('#bup-album-path').val(val);
+        if (val) { $('#bup-album-path').val(val); buildUploadShortcodes(); }
     });
+
+    $(document).on('change keyup', '#bup-album-path, #bup-sc-columns, #bup-sc-per_page, #bup-sc-link',
+        buildUploadShortcodes);
+    buildUploadShortcodes();
 
     // Lista álbuns para o uploader
     $(document).on('click', '#bup-list', function () {
