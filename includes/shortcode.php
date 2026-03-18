@@ -26,6 +26,7 @@ add_shortcode('btp_gallery', function($atts){
   $defaults=array_merge([
     'album'=>'','per_page'=>24,'order'=>'name','dir'=>'ASC','columns'=>4,
     'lightbox'=>'true','recursive'=>'false','download'=>'true',
+    'back_link'=>'','back_label'=>'← Voltar',
     'page'=>isset($_GET['pg'])?(int)$_GET['pg']:1
   ], (array)get_option('btp_gal_defaults',[]));
   $a=shortcode_atts($defaults,$atts,'btp_gallery');
@@ -41,7 +42,8 @@ add_shortcode('btp_gallery', function($atts){
   $sorted=btp_gal_sort($list,$a['order'],$a['dir']);
   [$items,$pg]=btp_gal_paginate($sorted,(int)$a['page'],(int)$a['per_page']);
 
-  $html=btp_gal_render_grid($a['album'],$items,$a,$show_dl);
+  $html=btp_gal_render_breadcrumb($a['album'],$a['back_link'],$a['back_label']);
+  $html.=btp_gal_render_grid($a['album'],$items,$a,$show_dl);
   $html.=btp_gal_render_pager($pg);
   return $html;
 });
@@ -133,6 +135,41 @@ function btp_gal_tree_children(){
     $items[]=['album'=>$rel,'label'=>$label,'thumb'=>$thumb,'leaf'=>$isLeaf?1:0,'count'=>(int)$info['count_direct']];
   }
   wp_send_json_success(['items'=>$items,'cols'=>$cols,'link'=>$link]);
+}
+
+function btp_gal_render_breadcrumb(string $album, string $back_link, string $back_label): string {
+  if(!$album) return '';
+
+  // Monta segmentos do caminho: "2026/Copa/Fotos" → ["2026","Copa","Fotos"]
+  $segments = explode('/', $album);
+  $base_url = $back_link ? esc_url($back_link) : esc_url(remove_query_arg(['album','pg']));
+
+  $html = '<nav class="btp-gal-breadcrumb">';
+
+  // Botão voltar aponta para o link configurado, ou remove o ?album da URL atual
+  if($back_link) {
+    $html .= '<a class="btp-gal-back" href="'.$base_url.'">'.esc_html($back_label).'</a>';
+    $html .= '<span class="btp-bc-sep">|</span>';
+  }
+
+  // Breadcrumb: cada segmento intermediário é clicável
+  $accumulated = '';
+  foreach($segments as $i => $seg) {
+    $accumulated = $accumulated ? $accumulated.'/'.$seg : $seg;
+    $is_last     = ($i === count($segments) - 1);
+    $label       = esc_html(btp_gal_humanize_title($seg));
+
+    if($is_last) {
+      $html .= '<span class="btp-bc-current">'.$label.'</span>';
+    } else {
+      $url   = esc_url(add_query_arg('album', rawurlencode($accumulated), $base_url));
+      $html .= '<a class="btp-bc-link" href="'.$url.'">'.$label.'</a>';
+      $html .= '<span class="btp-bc-sep">/</span>';
+    }
+  }
+
+  $html .= '</nav>';
+  return $html;
 }
 
 function btp_gal_render_grid(string $album, array $items, array $args, bool $show_dl=true): string {
