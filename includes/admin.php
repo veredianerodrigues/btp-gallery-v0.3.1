@@ -125,16 +125,12 @@ function btp_gal_admin_page() {
     $pages     = get_pages(['sort_column' => 'post_title', 'sort_order' => 'ASC']);
     $settings  = (array) get_option('btp_gal_settings', []);
     $base_path = isset($settings['base_path']) ? $settings['base_path'] : BTP_GAL_BASE_PATH;
-    $active    = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'config';
+    $active    = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'upload';
     ?>
     <div class="wrap">
         <h1>BTP Gallery</h1>
 
         <nav class="nav-tab-wrapper" style="margin-bottom:20px">
-            <a href="?page=btp-gallery&tab=config"
-               class="nav-tab <?php echo $active === 'config' ? 'nav-tab-active' : ''; ?>">
-               Configurações
-            </a>
             <a href="?page=btp-gallery&tab=upload"
                class="nav-tab <?php echo $active === 'upload' ? 'nav-tab-active' : ''; ?>">
                Upload de Imagens
@@ -142,6 +138,10 @@ function btp_gal_admin_page() {
             <a href="?page=btp-gallery&tab=builder"
                class="nav-tab <?php echo $active === 'builder' ? 'nav-tab-active' : ''; ?>">
                Gerador de Shortcodes
+            </a>
+            <a href="?page=btp-gallery&tab=config"
+               class="nav-tab <?php echo $active === 'config' ? 'nav-tab-active' : ''; ?>">
+               Configurações
             </a>
         </nav>
 

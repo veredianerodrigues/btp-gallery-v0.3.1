@@ -7,6 +7,7 @@
     }
 
     function buildShortcodes() {
+        if (!$('#bg-year').length) return; // não está na aba do builder
         var y   = $('#bg-year').val().trim();
         var d   = parseInt($('#bg-depth').val() || '1', 10);
         var a   = $('#bg-album').val();
