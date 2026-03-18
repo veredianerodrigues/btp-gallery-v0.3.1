@@ -1,7 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
 
-// ─── Menus & configurações ───────────────────────────────────────────────────
 add_action('admin_menu', function () {
     add_menu_page(
         'BTP Gallery', 'BTP Gallery', 'manage_options',
@@ -17,7 +16,7 @@ add_action('admin_init', function () {
 
 add_action('admin_enqueue_scripts', function ($hook) {
     if ($hook !== 'toplevel_page_btp-gallery') return;
-    wp_enqueue_media(); // necessário para o seletor de mídia (não usado aqui, mas útil)
+    wp_enqueue_media();
     wp_enqueue_script(
         'btp-gal-admin',
         BTP_GAL_URL . 'assets/admin.js',
@@ -31,7 +30,6 @@ add_action('admin_enqueue_scripts', function ($hook) {
     ]);
 });
 
-// ─── AJAX: listar álbuns (shortcode builder) ─────────────────────────────────
 add_action('wp_ajax_btp_gal_list_albums', function () {
     if (!current_user_can('manage_options')) wp_send_json_error('forbidden', 403);
     $parent = isset($_POST['parent']) ? sanitize_text_field(wp_unslash($_POST['parent'])) : '';
@@ -39,7 +37,6 @@ add_action('wp_ajax_btp_gal_list_albums', function () {
     wp_send_json_success(btp_gal_list_albums($parent, $depth));
 });
 
-// ─── AJAX: upload de imagens ──────────────────────────────────────────────────
 add_action('wp_ajax_btp_gal_upload_images', function () {
     if (!current_user_can('manage_options')) wp_send_json_error('Permissão negada.', 403);
     check_ajax_referer('btp_gal_upload', 'nonce');
@@ -80,7 +77,6 @@ add_action('wp_ajax_btp_gal_upload_images', function () {
             continue;
         }
 
-        // Validação adicional de MIME real (evita extensão falsa)
         $finfo = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
         if ($finfo) {
             $real_mime = finfo_file($finfo, $tmp);
@@ -92,7 +88,6 @@ add_action('wp_ajax_btp_gal_upload_images', function () {
             }
         }
 
-        // Evita sobrescrever arquivos existentes: adiciona sufixo numérico se necessário
         $dest_name = $orig_name;
         $dest_path = $dir . '/' . $dest_name;
         $counter   = 1;
@@ -108,7 +103,6 @@ add_action('wp_ajax_btp_gal_upload_images', function () {
             continue;
         }
 
-        // Invalida cache do álbum
         btp_gal_cache_del(btp_gal_cache_key($album, false));
         btp_gal_cache_del(btp_gal_cache_key($album, true));
 
@@ -118,7 +112,6 @@ add_action('wp_ajax_btp_gal_upload_images', function () {
     wp_send_json_success($results);
 });
 
-// ─── Página admin ─────────────────────────────────────────────────────────────
 function btp_gal_admin_page() {
     if (!current_user_can('manage_options')) return;
 

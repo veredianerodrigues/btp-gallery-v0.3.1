@@ -140,20 +140,16 @@ function btp_gal_tree_children(){
 function btp_gal_render_breadcrumb(string $album, string $back_link, string $back_label): string {
   if(!$album) return '';
 
-  // Monta segmentos do caminho: "2026/Copa/Fotos" → ["2026","Copa","Fotos"]
   $segments = explode('/', $album);
   $base_url = $back_link ? esc_url($back_link) : esc_url(remove_query_arg(['album','pg']));
 
   $html = '<nav class="btp-gal-breadcrumb">';
 
-  // Botão voltar aponta para o link configurado, ou remove o ?album da URL atual
   if($back_link) {
     $html .= '<a class="btp-gal-back" href="'.$base_url.'">'.esc_html($back_label).'</a>';
     $html .= '<span class="btp-bc-sep">|</span>';
   }
 
-  // Breadcrumb: segmentos intermediários só viram links se back_link estiver configurado
-  // (precisa de uma página de árvore/índice para exibir subpastas)
   $accumulated = '';
   foreach($segments as $i => $seg) {
     $accumulated = $accumulated ? $accumulated.'/'.$seg : $seg;

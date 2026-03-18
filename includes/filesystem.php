@@ -11,14 +11,10 @@ function btp_gal_base_path(): string {
     return untrailingslashit(wp_normalize_path($base));
 }
 
-// Relaxed sanitize: mantém Unicode/acentos; remove apenas segmentos . e .., normaliza barras
 function btp_gal_sanitize_album(string $album): string {
     $album = rawurldecode(wp_normalize_path(trim($album, "/\\ ")));
-    // remove /./ e /../ para evitar path traversal
     $album = preg_replace('#(^|/)\.(\.?)(/|$)#', '/', $album);
-    // normaliza barras repetidas
     $album = preg_replace('#/+#', '/', $album);
-    // remove barra inicial (sempre relativo ao base_path)
     $album = ltrim($album, '/');
     return $album;
 }
@@ -27,7 +23,6 @@ function btp_gal_get_album_abs_path(string $album): string {
     $album = btp_gal_sanitize_album($album);
     $abs   = wp_normalize_path(btp_gal_base_path().'/'.$album);
     $base  = btp_gal_base_path();
-    // garante que o resultado está dentro de base (trailing slash evita bypass tipo /base2/)
     if (strpos($abs.'/', $base.'/') !== 0) { btp_gal_log('Path escape bloqueado: '.$abs); return $base; }
     return $abs;
 }
@@ -156,10 +151,9 @@ function btp_gal_list_dirs_immediate(string $parent): array {
     return $out;
 }
 
-/** @return string|false Caminho absoluto criado, ou false em caso de erro. */
 function btp_gal_ensure_album_dir(string $album) {
     $abs = btp_gal_get_album_abs_path($album);
-    if ($abs === btp_gal_base_path()) return false; // path sanitization rejeitou
+    if ($abs === btp_gal_base_path()) return false;
     if (!is_dir($abs) && !wp_mkdir_p($abs)) return false;
     return $abs;
 }

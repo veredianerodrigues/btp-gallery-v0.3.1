@@ -1,5 +1,4 @@
 (function(){
-  // ---- Lightbox ----
   var state={list:[],index:-1,group:null};
   function ensureLB(){
     var lb=document.querySelector('.btp-lightbox');
@@ -40,7 +39,6 @@
   });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLB(); if(e.key==='ArrowRight') nav(1); if(e.key==='ArrowLeft') nav(-1); if(e.key.toLowerCase()==='d'){ var lb=document.querySelector('.btp-lightbox .download'); if(lb){ lb.click(); }} });
 
-  // ---- Árvore ----
   function humanize(s){return (s||'').replace(/[_-]+/g,' ').replace(/(?<=\D)(?=\d)|(?<=\d)(?=\D)/g,' ').replace(/(?<=[a-z])(?=[A-Z])/g,' ').replace(/\s{2,}/g,' ').trim();}
   function parentOf(p){var i=p.lastIndexOf('/');return i>0?p.slice(0,i):'';}
   function escapeHtml(s){return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');}
@@ -143,6 +141,8 @@
   document.addEventListener('DOMContentLoaded',function(){
     var tree=document.querySelector('.btp-gal-tree'); if(!tree) return;
     bc(tree,tree.getAttribute('data-root')||''); setBack(tree,tree.getAttribute('data-root')||'');
-    var open=tree.getAttribute('data-open'); if(open){ load(tree,open,{push:false}); }
+    var urlAlbum=(new URLSearchParams(window.location.search)).get('album')||'';
+    var open=urlAlbum||tree.getAttribute('data-open')||'';
+    if(open){ load(tree,open,{push:false}); }
   });
 })();

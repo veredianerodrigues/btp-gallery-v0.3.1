@@ -1,7 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
 
-// Default local (Windows). Em produção, configure em BTP Gallery → Configurações.
 if (!defined('BTP_GAL_BASE_PATH')) define('BTP_GAL_BASE_PATH', 'E:/uploads/btp/galerias');
 if (!defined('BTP_GAL_ROUTE'))     define('BTP_GAL_ROUTE', 'btp-gallery');
 if (!defined('BTP_GAL_CACHE_TTL')) define('BTP_GAL_CACHE_TTL', 600);
@@ -13,5 +12,4 @@ if (!defined('BTP_GAL_THUMB_SIZES')) define('BTP_GAL_THUMB_SIZES', serialize([
 
 if (!defined('BTP_GAL_ALLOWED_EXT')) define('BTP_GAL_ALLOWED_EXT', serialize(['jpg','jpeg','png','gif','webp']));
 
-// Ative para logar caminhos resolvidos e erros de arquivo em wp-content/debug.log
 if (!defined('BTP_GAL_DEBUG')) define('BTP_GAL_DEBUG', false);
