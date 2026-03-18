@@ -152,7 +152,8 @@ function btp_gal_render_breadcrumb(string $album, string $back_link, string $bac
     $html .= '<span class="btp-bc-sep">|</span>';
   }
 
-  // Breadcrumb: cada segmento intermediário é clicável
+  // Breadcrumb: segmentos intermediários só viram links se back_link estiver configurado
+  // (precisa de uma página de árvore/índice para exibir subpastas)
   $accumulated = '';
   foreach($segments as $i => $seg) {
     $accumulated = $accumulated ? $accumulated.'/'.$seg : $seg;
@@ -161,9 +162,12 @@ function btp_gal_render_breadcrumb(string $album, string $back_link, string $bac
 
     if($is_last) {
       $html .= '<span class="btp-bc-current">'.$label.'</span>';
-    } else {
+    } elseif($back_link) {
       $url   = esc_url(add_query_arg('album', rawurlencode($accumulated), $base_url));
       $html .= '<a class="btp-bc-link" href="'.$url.'">'.$label.'</a>';
+      $html .= '<span class="btp-bc-sep">/</span>';
+    } else {
+      $html .= '<span class="btp-bc-text">'.$label.'</span>';
       $html .= '<span class="btp-bc-sep">/</span>';
     }
   }
