@@ -10,9 +10,9 @@
 .btp-gal-item{display:flex;flex-direction:column}
 
 /* === Card (link de imagem) — usado nos 3 shortcodes === */
-.btp-gal-card{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:6px}
+.btp-gal-card{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:6px;position:relative}
 .btp-gal-card.btp-no-cover{background:#e8e8e8}
-.btp-gal-card img{width:100%;height:100%;object-fit:cover;display:block}
+.btp-gal-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
 /* === Wrapper do botão download (apenas btp_gallery) === */
 .btp-gal-card-wrap{position:relative}
