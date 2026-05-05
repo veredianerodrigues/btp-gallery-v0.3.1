@@ -48,7 +48,7 @@
     var ul=document.createElement('ul'); ul.className='btp-gal-grid cols-'+data.cols;
     (data.items||[]).forEach(function(it){
       var li=document.createElement('li'); li.className='btp-gal-item btp-tree-node'; li.setAttribute('data-album',it.album); li.setAttribute('data-leaf',it.leaf?'1':'0');
-      var a=document.createElement('a'); a.className='btp-gal-card btp-tree-toggle';
+      var a=document.createElement('a'); a.className='btp-gal-card btp-tree-toggle'+(it.thumb?'':' btp-no-cover');
       a.href=(it.leaf && data.link) ? (data.link+(data.link.indexOf('?')>-1?'&':'?')+'album='+encodeURIComponent(it.album)) : '#';
       if(it.thumb){ var img=document.createElement('img'); img.loading='lazy'; img.src=it.thumb; img.alt=it.label; a.appendChild(img); }
       li.appendChild(a);

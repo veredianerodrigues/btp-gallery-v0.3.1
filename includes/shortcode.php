@@ -70,7 +70,7 @@ add_shortcode('btp_gallery_index', function($atts){
     $count=(int)$al['count'];
     $link=esc_url(add_query_arg('album',rawurlencode($albumRel),$current_url));
 
-    $html.='<li class="btp-gal-item"><a class="btp-gal-card" href="'.$link.'">';
+    $html.='<li class="btp-gal-item"><a class="btp-gal-card'.($thumb?'':' btp-no-cover').'" href="'.$link.'">';
     if($thumb) $html.='<img loading="lazy" src="'.$thumb.'" alt="'.esc_attr($label).'">';
     $html.='</a><div class="btp-gal-title"><span class="btp-gal-name">'.esc_html($label).'</span><span class="btp-gal-count"> ('.$count.')</span></div></li>';
   }
@@ -104,7 +104,7 @@ add_shortcode('btp_gallery_tree', function($atts){
         : '#';
 
     $html.='<li class="btp-gal-item btp-tree-node" data-album="'.esc_attr($rel).'" data-leaf="'.($isLeaf?1:0).'">';
-    $html.='<a class="btp-gal-card btp-tree-toggle" href="'.$leafHref.'">';
+    $html.='<a class="btp-gal-card btp-tree-toggle'.($thumb?'':' btp-no-cover').'" href="'.$leafHref.'">';
     if($thumb) $html.='<img loading="lazy" src="'.$thumb.'" alt="'.esc_attr($label).'">';
     $html.='</a><div class="btp-gal-title"><span class="btp-gal-name">'.esc_html($label).'</span>';
     if($isLeaf){ $html.='<span class="btp-gal-count"> ('.(int)$info['count_direct'].')</span>'; }
