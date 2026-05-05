@@ -188,8 +188,12 @@ function btp_gal_admin_page() {
             <tr>
                 <th scope="row"><label for="bup-album-path">Caminho do álbum</label></th>
                 <td>
-                    <input id="bup-album-path" type="text"
-                           placeholder="2025/MeuEvento" class="regular-text">
+                    <div style="display:inline-flex;align-items:center;background:#fff;border:1px solid #8c8f94;border-radius:4px;padding:0 8px 0 0;max-width:25em">
+                        <span id="bup-album-prefix" style="color:#888;white-space:nowrap;padding:0 4px 0 8px;font-family:monospace"></span>
+                        <input id="bup-album-path" type="text"
+                               placeholder="MeuEvento"
+                               style="border:none;outline:none;box-shadow:none;padding:6px 4px;flex:1;min-width:0;background:transparent">
+                    </div>
                     <p class="description">
                         Relativo ao base path. Será criado automaticamente se não existir.
                     </p>

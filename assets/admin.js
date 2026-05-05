@@ -61,13 +61,26 @@
         .on('change keyup', buildShortcodes);
     buildShortcodes();
 
+    function fullAlbumPath() {
+        var year = $('#bup-year').val().trim();
+        var path = $('#bup-album-path').val().trim();
+        if (year && path) return year + '/' + path;
+        return path || year || '';
+    }
+
+    function updateAlbumPrefix() {
+        var year = $('#bup-year').val().trim();
+        $('#bup-album-prefix').text(year ? year + '/' : '');
+    }
+
     function buildUploadShortcodes() {
-        var album = $('#bup-album-path').val().trim();
+        var year  = $('#bup-year').val().trim();
+        var album = fullAlbumPath();
         var cols  = $('#bup-sc-columns').val()  || '4';
         var pp    = $('#bup-sc-per_page').val() || '24';
         var link  = $('#bup-sc-link').val()     || '';
 
-        var year = album ? album.split('/')[0] : '';
+        updateAlbumPrefix();
 
         $('#bup-sc-fixed').val(
             album
@@ -87,11 +100,16 @@
     }
 
     $(document).on('change', '#bup-album-select', function () {
-        var val = $(this).val();
-        if (val) { $('#bup-album-path').val(val); buildUploadShortcodes(); }
+        var val  = $(this).val();
+        var year = $('#bup-year').val().trim();
+        if (val) {
+            if (year && val.startsWith(year + '/')) val = val.slice(year.length + 1);
+            $('#bup-album-path').val(val);
+            buildUploadShortcodes();
+        }
     });
 
-    $(document).on('change keyup', '#bup-album-path, #bup-sc-columns, #bup-sc-per_page, #bup-sc-link',
+    $(document).on('change keyup', '#bup-year, #bup-album-path, #bup-sc-columns, #bup-sc-per_page, #bup-sc-link',
         buildUploadShortcodes);
     buildUploadShortcodes();
 
@@ -114,7 +132,7 @@
     });
 
     $(document).on('click', '#bup-submit', function () {
-        var album = $('#bup-album-path').val().trim();
+        var album = fullAlbumPath();
         var files = $('#bup-files')[0].files;
 
         if (!album) {

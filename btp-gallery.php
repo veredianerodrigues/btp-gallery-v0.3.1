@@ -2,7 +2,7 @@
 /*
  * Plugin Name: BTP Gallery (Filesystem Albums)
  * Description: Lê pastas do disco (E:/uploads/btp/galerias) e exibe como álbuns via shortcodes (índice, árvore e galeria).
- * Version:     0.3.1
+ * Version:     0.3.2
  * Author:      Verediane Rodrigues
  * Requires PHP: 7.4
  */

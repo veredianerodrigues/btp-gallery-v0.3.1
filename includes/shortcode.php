@@ -2,8 +2,8 @@
 defined('ABSPATH') || exit;
 
 function btp_gal_register_assets(){
-  wp_register_style('btp-gal', BTP_GAL_URL.'assets/gallery.css', [], '0.3.1');
-  wp_register_script('btp-gal', BTP_GAL_URL.'assets/gallery.js', [], '0.3.1', false);
+  wp_register_style('btp-gal', BTP_GAL_URL.'assets/gallery.css', [], '0.3.2');
+  wp_register_script('btp-gal', BTP_GAL_URL.'assets/gallery.js', [], '0.3.2', false);
 }
 function btp_gal_localize_front($extra=[]){
   $data = array_merge(['ajax'=>admin_url('admin-ajax.php')], $extra);
